@@ -18,3 +18,5 @@ override.tf.json
 terraform.rc - конфигурационные файлы командной строки
 
 NEW LINE
+
+NEW LINE IDE PYCHARM
