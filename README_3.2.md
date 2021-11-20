@@ -59,7 +59,7 @@ netology
 
 12. Ответ: у меня при аналогичной команде наблюдается следующее:
 
-vagrant@vagrant:~$ ssh localhost 'tty'
+vagrant@vagrant:~$ ssh localhost 'tty' \n
 vagrant@localhost's password:
 
 
