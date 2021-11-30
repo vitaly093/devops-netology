@@ -82,6 +82,7 @@ Proto Recv-Q Send-Q Local Address           Foreign Address         State
 
 tcp        0      0 vagrant:19999           _gateway:54058          ESTABLISHED
 
+![image](https://user-images.githubusercontent.com/60869933/144112613-1126e3fa-f926-4521-bb8d-8c9c41e58f13.png)
 
 
 
