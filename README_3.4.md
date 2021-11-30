@@ -85,4 +85,51 @@ tcp        0      0 vagrant:19999           _gateway:54058          ESTABLISHED
 ![image](https://user-images.githubusercontent.com/60869933/144112613-1126e3fa-f926-4521-bb8d-8c9c41e58f13.png)
 
 
+4. Ответ: да, можно, это видно как минимум вот по этим строкам:
+
+[    0.000000] DMI: innotek GmbH VirtualBox/VirtualBox, BIOS VirtualBox 12/01/2006
+[    0.000000] Hypervisor detected: KVM
+
+
+5. Ответ: fs.nr_open - это лимит на количество открытых дескрипторов. Имеет следующее значение:
+
+sysctl fs.nr_open
+fs.nr_open = 1048576
+
+Для пользователя по умолчанию установлено ограничение open files  (-n) 1024, то есть 1024 открытых дескриптора для текущей сессии терминала.
+
+
+
+6. Ответ:
+
+sudo unshare -f --pid --mount-proc /bin/bash
+
+Далее запущен процесс sleep 1h, и видно, что он в отдельном неймспейсе:
+
+root@vagrant:~# nsenter --target 2167 --pid --mount
+root@vagrant:/#
+root@vagrant:/#
+root@vagrant:/#
+root@vagrant:/# ps aux
+USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+root           1  0.0  0.4   9836  4040 pts/0    S    19:45   0:00 /bin/bash
+root          16  0.0  0.0   8076   584 pts/0    S+   19:54   0:00 sleep 1h
+root          26  0.0  0.4   9836  4088 pts/1    S    19:54   0:00 -bash
+root          35  0.0  0.3  11492  3324 pts/1    R+   19:54   0:00 ps aux
+
+
+7. Ответ: :(){ :|:& };: - это функция, которая внутри составной команды {} запускает два своих экземпляра. Каждый экземпляр далее запускает еще по два, и так далее, пока ресурсы машины, на которой эта функция была запущена не будут исчерпаны.
+
+Этот процесс останавливается благодаря тому, что для текущей сессии для одного пользователя имеется ограничение на количество процессов.
+
+root@vagrant:~# ulimit -a | grep proc
+max user processes              (-u) 3571
+
+
+В выводе dmesg видно, что следующий клонируемый процесс, номер которого превышает ограничение, вызывает отклонение этой операции на основании имеющегося ограничения: 
+
+[ 4024.853602] cgroup: fork rejected by pids controller in /user.slice/user-1000.slice/session-7.scope
+
+
+
 
