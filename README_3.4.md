@@ -15,7 +15,8 @@ After=network-online.target
 User=node_exporter
 Group=node_exporter
 Type=simple
-ExecStart=/usr/local/bin/node_exporter --web.config=/opt/node_exporter/config.yml
+ExecStart=/usr/local/bin/node_exporter -C /etc/node_exporter/config.conf
+EnvironmentFile=/etc/default/node_exporter
 
 [Install]
 WantedBy=multi-user.target
@@ -23,6 +24,11 @@ WantedBy=multi-user.target
 
 vagrant@vagrant:~$ cat /opt/node_exporter/config.yml
 #some_config
+
+*В прошлый раз забыл про EnvironmentFile и параметры службы*
+
+Параметры в службу можно передать при помощи указания дополнительных ключей в строке ExecStart, например указать на файл с некой конфигурацией для сервиса: -С /etc/node_exporter/config.conf
+
 
 Сервис добавлен в автозагрузку и при перезапуске - включается:
 
