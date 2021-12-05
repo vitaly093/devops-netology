@@ -33,4 +33,8 @@ Connection closed by foreign host.
 
 код ответа в браузере: 307 internal redirect
 дольше всего обрабатывался запрос https://sb.scorecardresearch.com/cs/17440561/beacon.js
+скриншот:
+
+![image](https://user-images.githubusercontent.com/60869933/144728394-08c1ce2f-26fd-420d-9cb7-0ca35348dca3.png)
+
 
