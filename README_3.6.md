@@ -38,3 +38,7 @@ Connection closed by foreign host.
 ![image](https://user-images.githubusercontent.com/60869933/144728394-08c1ce2f-26fd-420d-9cb7-0ca35348dca3.png)
 
 
+
+3. Ответ: мой IP: 185.13.112.230
+
+
