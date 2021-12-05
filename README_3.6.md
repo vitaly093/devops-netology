@@ -41,4 +41,7 @@ Connection closed by foreign host.
 
 3. Ответ: мой IP: 185.13.112.230
 
+![image](https://user-images.githubusercontent.com/60869933/144728463-8ab97184-21b7-4676-b28a-b7c5feb1f5b6.png)
+
+
 
