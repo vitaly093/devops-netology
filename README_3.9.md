@@ -151,6 +151,9 @@ tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 262144 byt
 100 packets captured
 173 packets received by filter
 0 packets dropped by kernel
+```
+
+![image](https://user-images.githubusercontent.com/60869933/144940416-e71875c6-71db-458b-8768-a701a84be1dc.png)
 
 
 
