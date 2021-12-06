@@ -15,6 +15,7 @@ Routing entry for 185.13.112.0/22
 route-views>
 
 ```
+```
 route-views>show bgp 185.13.112.230
 BGP routing table entry for 185.13.112.0/22, version 1388732254
 Paths: (24 available, best #14, table default)
@@ -184,8 +185,8 @@ Paths: (24 available, best #14, table default)
       path 7FE10C73F158 RPKI State not found
       rx pathid: 0, tx pathid: 0
 route-views>
-
 ```
+
 
 2. Ответ: 
 
@@ -259,6 +260,7 @@ root@vagrant:~#
 Из вывода с ключами l t p видно: соединения, которые "слушает" сервер, TCP соединения, процессы, которые их используют.
 
 Получается, что слушающие указанные порты процессы это - "rpcbind",pid=610,fd=4; "systemd-resolve",pid=611,fd=13 и "sshd",pid=851,fd=3
+
 Systemd-resolve - DNS сервер (53-й порт), поскольку в настройках прописан IP DNS сервера:
 
 ```bash
@@ -315,6 +317,9 @@ bootpc - bootstrap protocol. Протокол, который используе
 
 
 5. Ответ: прикрепляю картинку:
+
+
+![image](https://user-images.githubusercontent.com/60869933/144767259-b631002e-13eb-4934-b4eb-7b5e69ab578c.png)
 
 
 
