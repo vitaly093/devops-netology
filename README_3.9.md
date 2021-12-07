@@ -157,3 +157,48 @@ tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 262144 byt
 
 
 
+
+8* Ответ:
+
+
+```bash
+
+root@vagrant:/home/vagrant/.ssh# nmap -A -T4 scanme.nmap.org
+Starting Nmap 7.80 ( https://nmap.org ) at 2021-12-07 00:06 UTC
+Nmap scan report for scanme.nmap.org (45.33.32.156)
+Host is up (0.0055s latency).
+All 1000 scanned ports on scanme.nmap.org (45.33.32.156) are filtered
+Too many fingerprints match this host to give specific OS details
+Network Distance: 2 hops
+
+TRACEROUTE (using port 80/tcp)
+HOP RTT     ADDRESS
+1   6.12 ms _gateway (10.0.2.2)
+2   6.15 ms scanme.nmap.org (45.33.32.156)
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 9.09 seconds
+root@vagrant:/home/vagrant/.ssh#
+```
+
+
+9. Ответ: ufw настроен
+
+```bash
+
+root@vagrant:/home/vagrant# ufw status verbose
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), disabled (routed)
+New profiles: skip
+
+To                         Action      From
+--                         ------      ----
+22/tcp                     ALLOW IN    Anywhere
+80/tcp                     ALLOW IN    Anywhere
+443/tcp                    ALLOW IN    Anywhere
+22/tcp (v6)                ALLOW IN    Anywhere (v6)
+80/tcp (v6)                ALLOW IN    Anywhere (v6)
+443/tcp (v6)               ALLOW IN    Anywhere (v6)
+```
+
