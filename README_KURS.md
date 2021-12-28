@@ -71,3 +71,17 @@ C:\Users\vfkuhtenko>
 5. :wq 
 
 
+
+
+
+
+
+
+
+8. Ответ:
+
+![image](https://user-images.githubusercontent.com/60869933/147604465-527751d8-c245-4c63-b6d0-125861b6f690.png)
+
+
+
+
