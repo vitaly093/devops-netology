@@ -64,20 +64,18 @@ echo connection successful
 ```bash
 #!/usr/bin/env bash
 i=0
+ip_addresses=("192.168.0.1" "173.194.222.113" "87.250.250.242")
 echo '' > curl.log
 while (($i<5))
 do
         let "i+=1"
         echo iteration: $i >> curl.log
-        echo 'connection to 192.168.0.1' >> curl.log
-        curl http://192.168.0.1 --connect-timeout 1  >> curl.log
-        echo 'curl exit code:' $? >> curl.log
-        echo 'connection to 173.194.222.113' >> curl.log
-        curl http://173.194.222.113 --connect-timeout 1  >> curl.log
-        echo 'curl exit code:' $? >> curl.log
-        echo 'connection to 87.250.250.242' >> curl.log
-        curl http://87.250.250.242 --connect-timeout 1  >> curl.log
-        echo 'curl exit code:' $? >> curl.log
+                for j in ${ip_addresses[@]}
+                do
+                echo 'connection to' $j >> curl.log
+                curl http://$j --connect-timeout 1  >> curl.log
+                echo 'curl exit code:' $? >> curl.log
+                done
         echo '==========================================================' >> curl.log
 done
 ```
@@ -88,40 +86,27 @@ done
 ### Ваш скрипт:
 ```bash
 #!/usr/bin/env bash
-f=192.168.0.1
-s=173.194.222.113
-t=87.250.250.242
+ip_addresses=("192.168.0.1" "173.194.222.113" "87.250.250.242")
 echo '' > curl.log
 while ((1==1))
 do
-        echo 'connection to 192.168.0.1' >> curl.log
-        curl http://$f --connect-timeout 1  >> curl.log
-        y=$?
-        echo 'curl exit code:' $y >> curl.log
-        echo 'connection to 173.194.222.113' >> curl.log
-        curl http://$s --connect-timeout 1  >> curl.log
-        u=$?
-        echo 'curl exit code:' $u >> curl.log
-        echo 'connection to 87.250.250.242' >> curl.log
-        curl http://$t --connect-timeout 1  >> curl.log
-        i=$?
-        echo 'curl exit code:' $i >> curl.log
-        echo '==========================================================' >> curl.log
-        if (($y!=0))
-        then
-        echo exit code: $y, IP: $f > error.log
-        break
-        elif (($u!=0))
-        then
-        echo exit code: $u, IP: $s > error.log
-        break
-        elif (($i!=0))
-        then
-        echo exit code: $i, IP: $t > error.log
-        break
-        else
-        continue
-        fi
+        for i in ${ip_addresses[@]}
+                do
+                echo -e `date` >> curl.log
+                echo 'connection to' $i '--------------------------------------' >> curl.log
+                curl http://$i --connect-timeout 1 -m 1  >> curl.log
+                e=$?
+                echo 'curl exit code:' $e >> curl.log
+                echo '---------------------------------------------------' >> curl.log
+                if (($e!=0))
+                        then
+                        echo -e "`date` \nexit code:" $e',' 'IP:' $i > error.log
+                        break 2
+                        else
+                        continue
+                fi
+                done
+echo '==========================================================' >> curl.log
 done
 echo connection unsuccsessful
 ```
