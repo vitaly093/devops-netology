@@ -17,9 +17,8 @@
 Для получения зачета, вам необходимо предоставить:
 - Скриншот страницы свойств созданной ВМ, как на примере ниже:
 
-<p align="center">
-  <img width="1200" height="600" src="./assets/yc_01.png">
-</p>
+![image](https://user-images.githubusercontent.com/60869933/154567565-5abdd9cd-4b28-4317-93de-216e378c9d3a.png)
+
 
 ## Задача 3
 
