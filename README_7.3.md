@@ -49,6 +49,9 @@ dynamodb.
 ```
 Вывод terraform init представлен в предыдущей задаче.
 ```
+Вот скриншот из s3 корзины с файлом tfstate:
+![image](https://user-images.githubusercontent.com/60869933/184502277-15fe4a97-879c-472c-875c-5e6bbdd375d8.png)
+
 
 2. Создайте два воркспейса `stage` и `prod`.
 
