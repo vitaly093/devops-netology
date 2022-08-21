@@ -1,0 +1,26 @@
+{
+  "builders": [
+    {
+      "disk_type": "network-nvme",
+      "folder_id": "b1gk5uhgm7kbkd0ajf1i",
+      "image_description": "for ansible HW 8.2",
+      "image_family": "ubuntu",
+      "image_name": "ubuntu-2004",
+      "source_image_family": "ubuntu-2004-lts",
+      "ssh_username": "ubuntu",
+      "subnet_id": "e9bjtsigvg5qb9nq1a5m",
+      "type": "yandex",
+      "use_ipv4_nat": true,
+      "zone": "ru-central1-a"
+    }
+  ],
+  "provisioners": [
+    {
+      "inline": [
+        "sudo apt-get update",
+        "sudo apt-get install -y bridge-utils bind9-utils iptables curl net-tools tcpdump rsync telnet openssh-server"
+      ],
+      "type": "shell"
+    }
+  ]
+}

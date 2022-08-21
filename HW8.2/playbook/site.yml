@@ -1,0 +1,117 @@
+---
+- name: Install Clickhouse
+  hosts: clickhouse
+  become: yes
+  become_user: root
+  remote_user: centos
+  handlers:
+    - name: Start clickhouse service
+      become: true
+      ansible.builtin.service:
+        name: clickhouse-server
+        state: restarted
+  tasks:
+    - block:
+        - name: Get clickhouse distrib
+          ansible.builtin.get_url:
+            url: "https://packages.clickhouse.com/rpm/stable/{{ item }}-{{ clickhouse_version }}.noarch.rpm"
+            dest: "./{{ item }}-{{ clickhouse_version }}.rpm"
+          with_items: "{{ clickhouse_packages }}"
+      rescue:
+        - name: Get clickhouse distrib
+          ansible.builtin.get_url:
+            url: "https://packages.clickhouse.com/rpm/stable/clickhouse-common-static-{{ clickhouse_version }}.x86_64.rpm"
+            dest: "./clickhouse-common-static-{{ clickhouse_version }}.rpm"
+    - name: Install clickhouse packages
+      become: true
+      ansible.builtin.yum:
+        name:
+          - clickhouse-common-static-{{ clickhouse_version }}.rpm
+          - clickhouse-client-{{ clickhouse_version }}.rpm
+          - clickhouse-server-{{ clickhouse_version }}.rpm
+      notify: Start clickhouse service
+    - name: Start clickhous serv
+      become: true
+      ansible.builtin.service:
+        name: clickhouse-server
+        state: restarted
+        
+    - name: Create database
+      ansible.builtin.command: "clickhouse-client -q 'create database logs;'"
+      register: create_db
+      failed_when: create_db.rc != 0 and create_db.rc !=82
+      changed_when: create_db.rc == 0
+
+- name: Install vector
+  hosts: vector
+  become: yes
+  become_user: root
+  remote_user: ubuntu
+  tasks:
+    - name: Make a directory for vector
+      ansible.builtin.command: mkdir -p vector
+
+    - name: Get vector distr
+      ansible.builtin.get_url:
+        url: "https://packages.timber.io/vector/0.23.3/vector-0.23.3-x86_64-unknown-linux-musl.tar.gz"
+        dest: "./vector/vector-0.23.3-x86_64-unknown-linux-musl.tar.gz"
+
+    - name: Extract vector distr
+      ansible.builtin.unarchive:
+        remote_src: yes
+        src: "/home/ubuntu/vector/vector-0.23.3-x86_64-unknown-linux-musl.tar.gz"
+        dest: "/home/ubuntu/vector"
+        extra_opts: [--strip-components=2]
+
+    - name: Move Vector into Path environment variable
+      ansible.builtin.shell: cd /home/ubuntu/ && echo "export PATH=\"$(pwd)/vector/bin:\$PATH\"" >> /home/ubuntu/.profile
+      args:
+        executable: /bin/bash
+
+    - name: Enable user profile with additions to PATH
+      ansible.builtin.shell: source /home/ubuntu/.profile
+      args:
+        executable: /bin/bash
+
+    - name: Create user vector
+      ansible.builtin.user:
+         name: vector
+         shell: /bin/bash
+         append: yes
+
+    - name: Create dir for vector config
+      become: true
+      ansible.builtin.file:
+        path: /etc/vector
+        owner: vector
+        state: directory
+        mode: 0755
+
+    - name: Create dir for vector data
+      become: true
+      ansible.builtin.file:
+        path: /var/lib/vector
+        owner: vector
+        state: directory      
+        mode: 0755
+
+
+    - name: status check
+      become: true
+      ansible.builtin.shell: systemctl status vector
+      args:
+        executable: /bin/bash
+      register: result
+
+    - name: Copy exec and config files
+      ansible.builtin.shell: cp /home/ubuntu/vector/bin/vector /usr/bin && cp /home/ubuntu/vector/etc/systemd/vector.default /etc/default && cp /home/ubuntu/vector/config/vector.toml /etc/vector 
+      args:
+        executable: /bin/bash
+      when: result is failed
+    
+    - name: Start Vector
+      become: true
+      ansible.builtin.shell: cp -av /home/ubuntu/vector/etc/systemd/vector.service /etc/systemd/system && systemctl start vector
+      args:
+        executable: /bin/bash
+       
