@@ -1,0 +1,35 @@
+---
+# tasks file for lighthouse-role
+- name: Upgrade the OS
+  become: true
+  ansible.builtin.apt:
+    upgrade: dist
+
+- name: Install nginx
+  become: true
+  ansible.builtin.apt:
+    name: nginx
+    update_cache: yes
+
+- name: Install subversion
+  become: true
+  ansible.builtin.apt:
+    name: subversion
+
+- name: Export lighthouse
+  become: true
+  ansible.builtin.shell: svn export https://github.com/VKCOM/lighthouse/trunk /home/ubuntu/lighthouse
+  args:
+    executable: /bin/bash
+
+- name: Change Config NGINX
+  become: true
+  ansible.builtin.shell: sed -i 's/root \/var\/www\/html;/root \/home\/ubuntu\/lighthouse;/' /etc/nginx/sites-enabled/default
+  args:
+    executable: /bin/bash
+
+- name: Reload nginx
+  become: true
+  ansible.builtin.shell: sudo nginx -s reload
+  args:
+    executable: /bin/bash

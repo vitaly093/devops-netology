@@ -1,0 +1,12 @@
+---
+# handlers file for clickhouse
+- name: "Restart Clickhouse Service"
+  set_fact:
+    clickhouse_service_ensure: "restarted"
+  listen: 'restart-ch'
+
+#- name: Start clickhouse service
+#  become: true
+#  ansible.builtin.service:
+#    name: clickhouse-server
+#    state: restarted
